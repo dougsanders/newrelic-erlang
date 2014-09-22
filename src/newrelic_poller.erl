@@ -47,7 +47,7 @@ handle_info(poll, State) ->
             (State#state.error_cb)(poll_failed, Error),
             ok;
         {Metrics, Errors} ->
-            Type = application:get_env(newrelic, api_type),
+            {ok, Type} = application:get_env(newrelic, api_type),
             push(Type, Hostname, Metrics, Errors, State)
     end,
 
