@@ -72,7 +72,7 @@ default_error_cb(push_failed, Error) ->
     error_logger:warning_msg("newrelic_poller: push failed: ~p~n", [Error]).
 
 push(collector, Hostname, Metrics, Errors, State) ->
-    case catch newrelic:push(Hostname, Metrics, Errors, State) of
+    case catch newrelic:push(Hostname, Metrics, Errors) of
         ok ->
             ok;
         Error ->
