@@ -47,7 +47,7 @@ handle_info(poll, State) ->
             (State#state.error_cb)(poll_failed, Error),
             ok;
         {Metrics, Errors} ->
-            Type = application:get_env(newrelic, api_type),
+            {ok, Type} = application:get_env(newrelic, api_type),
             push(Type, Hostname, Metrics, Errors, State)
     end,
 
@@ -72,7 +72,7 @@ default_error_cb(push_failed, Error) ->
     error_logger:warning_msg("newrelic_poller: push failed: ~p~n", [Error]).
 
 push(collector, Hostname, Metrics, Errors, State) ->
-    case catch newrelic:push(Hostname, Metrics, Errors, State) of
+    case catch newrelic:push(Hostname, Metrics, Errors) of
         ok ->
             ok;
         Error ->
